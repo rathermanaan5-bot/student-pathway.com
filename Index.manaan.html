@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Student Pathway — Education Support</title>
+  <style>
+    :root{
+      --ink:#16253a;--muted:#65758b;--line:#e0e8ef;--paper:#ffffff;--canvas:#f4f7f5;
+      --navy:#183b52;--teal:#176b62;--mint:#e1f3ed;--lime:#d8edaa;--gold:#f4c96b;
+      --focus:#2e8b78;--shadow:0 22px 70px rgba(22,53,69,.10);--radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--canvas);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.5}
+    a{color:inherit}
+    button,input,select{font:inherit}
+    button,a,select,input{outline-color:var(--focus)}
+    .topbar{height:74px;display:flex;align-items:center;justify-content:space-between;max-width:1240px;margin:auto;padding:0 28px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:800;letter-spacing:-.03em}
+    .brand-mark{width:41px;height:41px;display:grid;place-items:center;border-radius:14px;background:var(--navy);color:#fff;font-weight:900;letter-spacing:-.07em;font-size:18px;box-shadow:0 8px 20px #183b5220}
+    .brand-text{font-size:16px;line-height:1.12}.brand-text small{display:block;color:var(--muted);font-size:10px;font-weight:650;letter-spacing:.14em;text-transform:uppercase;margin-top:4px}
+    .top-note{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px}.dot{width:8px;height:8px;border-radius:100%;background:#57a98c;display:inline-block}
+    main{max-width:1240px;margin:0 auto;padding:18px 28px 60px}
+    .hero{min-height:450px;display:grid;grid-template-columns:1.04fr .96fr;background:var(--navy);border-radius:30px;overflow:hidden;box-shadow:var(--shadow);position:relative}
+    .hero-copy{color:white;padding:clamp(30px,5vw,64px);position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
+    .hero-copy:after{content:"";position:absolute;z-index:-1;width:430px;height:430px;border:1px solid #ffffff20;border-radius:50%;right:-165px;bottom:-235px;box-shadow:0 0 0 45px #ffffff08,0 0 0 90px #ffffff06}
+    .eyebrow{font-size:11px;letter-spacing:.17em;text-transform:uppercase;font-weight:800;color:#bde6d7;display:flex;gap:9px;align-items:center}
+    .eyebrow:before{content:"";width:24px;height:2px;background:var(--gold);display:block}
+    h1{font-size:clamp(34px,4.5vw,56px);line-height:1.04;letter-spacing:-.055em;margin:24px 0 18px;max-width:540px;font-weight:790}
+    .hero-copy p{max-width:450px;color:#d3e3e7;font-size:16px;line-height:1.75;margin:0}
+    .hero-points{display:flex;gap:10px;flex-wrap:wrap;margin-top:36px}.hero-pill{border:1px solid #ffffff30;border-radius:100px;padding:9px 12px;font-size:11px;color:#f0f7f4;background:#ffffff08}
+    .hero-art{position:absolute;right:8%;top:8%;width:110px;height:110px;border-radius:35px;background:var(--lime);transform:rotate(12deg);opacity:.95;display:grid;place-items:center;color:var(--navy);font-size:43px;font-weight:900;box-shadow:0 20px 60px #081f2d22}
+    .hero-art:after{content:"↗";position:absolute;right:-20px;bottom:-20px;background:var(--gold);width:48px;height:48px;border-radius:17px;display:grid;place-items:center;font-size:26px;transform:rotate(-12deg)}
+    .form-side{background:#f9fbfa;padding:clamp(26px,4vw,48px);display:flex;align-items:center;justify-content:center}
+    .form-card{width:100%;max-width:430px}.form-card h2{font-size:26px;letter-spacing:-.04em;margin:0 0 7px}.form-sub{font-size:13px;color:var(--muted);margin:0 0 25px;line-height:1.6}
+    .field{margin:0 0 17px}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    label{display:block;font-size:12px;font-weight:750;margin-bottom:7px;color:#283c50}
+    input[type=text],input[type=tel],select{width:100%;border:1px solid #d7e1e6;border-radius:12px;padding:13px 13px;background:#fff;color:var(--ink);font-size:14px;transition:border .15s,box-shadow .15s;min-width:0}
+    input:focus,select:focus{border-color:var(--focus);box-shadow:0 0 0 3px #176b6217}
+    .micro{font-size:11px;line-height:1.5;color:var(--muted);margin-top:6px}
+    .consent{display:flex;gap:10px;align-items:flex-start;margin:18px 0 17px;color:#526276;font-size:11px;line-height:1.55;font-weight:500}
+    .consent input{margin-top:3px;accent-color:var(--teal);flex:none}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:12px;padding:13px 17px;background:var(--teal);color:#fff;font-size:13px;font-weight:780;text-decoration:none;cursor:pointer;transition:transform .15s,background .15s;box-shadow:0 7px 16px #176b6220}
+    .btn:hover{background:#0f5b53;transform:translateY(-1px)}.btn:disabled{opacity:.55;cursor:wait;transform:none}
+    .btn.full{width:100%}.btn.secondary{background:#ecf4f1;color:#1b5f57;box-shadow:none}.btn.secondary:hover{background:#dcefe8}
+    .status{font-size:12px;line-height:1.5;margin-top:13px;color:var(--muted)}.status:empty{display:none}.status.good{color:#136d4b}.status.bad{color:#a52d2d}
+    .privacy{margin:16px 0 0;font-size:10px;line-height:1.6;color:#8794a0;text-align:center}
+    .dashboard{display:none;animation:fade-in .25s ease}.dashboard.visible{display:block}@keyframes fade-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .session-notice{display:none;padding:13px 16px;margin:14px 0 4px;border-radius:12px;font-size:12px;line-height:1.55}.session-notice.visible{display:block}.session-notice.good{background:#e6f5ec;border:1px solid #cae8d7;color:#1e6548}.session-notice.warn{background:#fff3d8;border:1px solid #f1dfa8;color:#795b1e}
+    .welcome{padding:34px 0 25px;display:flex;align-items:flex-end;justify-content:space-between;gap:22px}.welcome h2{font-size:clamp(27px,3.5vw,39px);letter-spacing:-.05em;line-height:1.1;margin:10px 0 10px}.welcome p{color:var(--muted);font-size:14px;margin:0;max-width:660px}.welcome .eyebrow{color:var(--teal)}
+    .welcome-badge{font-size:11px;white-space:nowrap;border:1px solid #d4e8df;background:#eaf5ef;color:#216855;border-radius:99px;padding:9px 13px}
+    .panel{border:1px solid var(--line);background:var(--paper);border-radius:22px;padding:clamp(20px,3vw,32px);box-shadow:0 9px 32px #173b5108;margin-bottom:22px}
+    .panel-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:23px}.panel-heading h3{font-size:20px;letter-spacing:-.035em;margin:0 0 6px}.panel-heading p{font-size:12px;color:var(--muted);margin:0;line-height:1.6}.step{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:#f1f5ef;color:#50735f;border-radius:8px;padding:8px 10px;white-space:nowrap}
+    .finder-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px}.finder-grid .field{margin:0}.span2{grid-column:span 2}.field.hide{display:none}
+    .results-header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:30px 0 15px}.results-header h3{font-size:18px;margin:0;letter-spacing:-.03em}.results-header p{font-size:11px;color:var(--muted);margin:4px 0 0}
+    .directory-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .directory-card{display:flex;flex-direction:column;align-items:flex-start;border:1px solid var(--line);background:#fff;border-radius:17px;padding:19px;min-height:218px;transition:transform .17s,box-shadow .17s,border .17s}.directory-card:hover{transform:translateY(-3px);box-shadow:0 13px 35px #183b5210;border-color:#b8d8cf}
+    .source-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:#e5f3ed;color:#246c5d;font-weight:900;font-size:14px;margin-bottom:15px}.source-icon.gold{background:#fff3d8;color:#926619}.source-icon.blue{background:#e8eef9;color:#395f9d}
+    .directory-card h4{font-size:14px;margin:0 0 7px;letter-spacing:-.02em}.directory-card p{font-size:11px;line-height:1.6;color:var(--muted);margin:0 0 14px}.directory-card a{font-size:11px;color:var(--teal);text-decoration:none;font-weight:800;margin-top:auto;display:inline-flex;align-items:center;gap:7px}.directory-card a:hover{text-decoration:underline}
+    .source-note{display:flex;align-items:flex-start;gap:11px;background:#fff8e7;border:1px solid #f1e1b9;border-radius:14px;padding:15px;color:#685534;font-size:11px;line-height:1.65;margin:18px 0 25px}.source-note strong{display:block;color:#4e4025;font-size:12px;margin-bottom:3px}.source-note .note-icon{font-size:18px;flex:none}
+    .team-strip{display:flex;align-items:center;justify-content:space-between;gap:20px;background:#e5f2ec;border:1px solid #d4e8dd;border-radius:19px;padding:21px 23px;margin-bottom:28px}.team-strip h3{font-size:16px;margin:0 0 5px;letter-spacing:-.025em}.team-strip p{font-size:12px;line-height:1.55;color:#567468;margin:0;max-width:620px}
+    .footer{border-top:1px solid #e0e8e5;padding:28px 0 0;display:flex;justify-content:space-between;gap:20px;align-items:flex-start;color:#748395;font-size:11px;line-height:1.7}.footer strong{color:#25394d}.footer p{margin:0}.footer-links{display:flex;gap:12px;flex-wrap:wrap}.footer a{color:#536f79;text-decoration:none}.footer a:hover{text-decoration:underline}
+    .hidden{display:none!important}.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+    @media(max-width:900px){.hero{grid-template-columns:1fr}.hero-copy{min-height:320px;padding:34px}.hero-art{width:76px;height:76px;right:8%;top:auto;bottom:36px;font-size:31px;border-radius:24px}.hero-art:after{width:36px;height:36px;border-radius:12px;font-size:20px}.form-side{padding:30px}.form-card{max-width:none}.directory-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:620px){.topbar{padding:0 17px;height:66px}.top-note{display:none}main{padding:7px 15px 35px}.hero{border-radius:22px}.hero-copy{padding:29px 24px;min-height:335px}.hero-copy h1{font-size:38px;max-width:320px}.hero-copy p{font-size:14px;max-width:330px}.hero-points{margin-top:25px;max-width:270px}.hero-pill{font-size:10px;padding:7px 9px}.form-side{padding:25px 21px}.field-row{grid-template-columns:1fr}.welcome{align-items:flex-start;flex-direction:column;padding:29px 0 20px}.welcome-badge{white-space:normal}.panel{padding:20px 16px;border-radius:17px}.finder-grid{grid-template-columns:1fr}.span2{grid-column:auto}.directory-grid{grid-template-columns:1fr}.directory-card{min-height:0}.team-strip{flex-direction:column;align-items:flex-start;padding:18px}.footer{flex-direction:column}.panel-heading{margin-bottom:18px}.hero-art{bottom:27px;right:26px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Student Pathway home">
+      <span class="brand-mark">SP</span>
+      <span class="brand-text">Student Pathway<small>Education support initiative</small></span>
+    </a>
+    <div class="top-note"><span class="dot"></span> Guidance for your next step</div>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="signInPanel">
+      <div class="hero-copy">
+        <div>
+          <div class="eyebrow">A helping hand for students</div>
+          <h1>Your future is bigger than your circumstances.</h1>
+          <p>Looking for a good school, junior college or college? Start here. Share your details so our team can support you, then explore school directories and contact options in your district.</p>
+          <div class="hero-points">
+            <span class="hero-pill">Find nearby institutions</span>
+            <span class="hero-pill">Explore streams</span>
+            <span class="hero-pill">Ask for personal guidance</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">↗</div>
+      <div class="form-side">
+        <div class="form-card">
+          <div class="eyebrow" style="color:var(--teal)">Student access</div>
+          <h2>Sign in for support</h2>
+          <p class="form-sub">Just three details to help our team understand who may need education guidance.</p>
+          <form id="registrationForm">
+            <div class="field">
+              <label for="studentName">Student name *</label>
+              <input id="studentName" name="name" type="text" placeholder="Enter your full name" maxlength="80" autocomplete="name" required>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="studentClass">Your class / level *</label>
+                <select id="studentClass" name="studentClass" required>
+                  <option value="" disabled selected>Select class</option>
+                  <option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option><option>Class 6</option>
+                  <option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option>
+                  <option>College / University</option><option>Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="studentMobile">Mobile number *</label>
+                <input id="studentMobile" name="mobile" type="tel" placeholder="10-digit number" maxlength="16" autocomplete="tel" inputmode="tel" required>
+              </div>
+            </div>
+            <div class="hp" aria-hidden="true"><label for="website">Leave blank</label><input type="text" id="website" name="website" tabindex="-1" autocomplete="off"></div>
+            <label class="consent" for="contactConsent"><input id="contactConsent" type="checkbox" required><span>I agree that the Student Pathway team may use these details to contact me about educational guidance. If I am under 18, my parent/guardian knows I am making this request.</span></label>
+            <button class="btn full" id="submitButton" type="submit">Continue to school finder <span aria-hidden="true">→</span></button>
+            <div class="status" id="registrationStatus" role="status" aria-live="polite"></div>
+          </form>
+          <p class="privacy">We do not ask for passwords, bank details, PINs or OTPs. This is a contact registration form, not password-based identity verification.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard" id="dashboard">
+      <div id="sessionNotice" class="session-notice" role="status" aria-live="polite"></div>
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">Your next step starts here</div>
+          <h2 id="welcomeTitle">Let's find your options.</h2>
+          <p>Choose your location and the kind of institution you need. We'll open current search results and trusted directories so you can check school or college details and contact them.</p>
+        </div>
+        <span class="welcome-badge" id="studentBadge">Student session</span>
+      </div>
+
+      <section class="panel" aria-labelledby="finderTitle">
+        <div class="panel-heading">
+          <div><h3 id="finderTitle">Find schools and colleges</h3><p>Start with your state and district. Class 11 and 12 students can choose a stream.</p></div>
+          <span class="step">01 · Search</span>
+        </div>
+        <form id="schoolFinderForm">
+          <div class="finder-grid">
+            <div class="field">
+              <label for="finderClass">Class / level *</label>
+              <select id="finderClass" required>
+                <option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option><option>Class 11</option><option>Class 12</option><option>College / University</option><option>Other</option>
+              </select>
+            </div>
+            <div class="field hide" id="streamField">
+              <label for="stream">Preferred stream *</label>
+              <select id="stream"><option value="">Choose stream</option><option>Science (PCB — Biology)</option><option>Science (PCM — Mathematics)</option><option>Science (PCMB)</option><option>Commerce</option><option>Arts / Humanities</option><option>Vocational</option><option>Not sure yet</option></select>
+            </div>
+            <div class="field">
+              <label for="institutionType">Looking for *</label>
+              <select id="institutionType"><option value="school">School / Senior Secondary School</option><option value="college">College / University</option><option value="both">Both schools and colleges</option></select>
+            </div>
+            <div class="field">
+              <label for="state">State / Union Territory *</label>
+              <select id="state" required><option value="" disabled selected>Select state / UT</option></select>
+            </div>
+            <div class="field">
+              <label for="district">District or city *</label>
+              <input id="district" type="text" maxlength="80" placeholder="Type your district or city" required>
+              <div class="micro">Enter the district name as used locally. You can type any district in India.</div>
+            </div>
+            <div class="field">
+              <label for="schoolQuery">School / course keyword (optional)</label>
+              <input id="schoolQuery" type="text" maxlength="80" placeholder="e.g. residential, science, nursing">
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:21px">
+            <button class="btn" type="submit">Search directories <span aria-hidden="true">↗</span></button>
+            <button class="btn secondary" id="resetFinder" type="button">Clear filters</button>
+          </div>
+          <div class="status" id="finderStatus" role="status" aria-live="polite"></div>
+        </form>
+
+        <div id="resultsArea" class="hidden">
+          <div class="results-header"><div><h3 id="resultsTitle">Directory links for your area</h3><p id="resultsSubtitle">Choose a source to view current information.</p></div><span class="step">02 · Explore</span></div>
+          <div class="directory-grid" id="directoryGrid"></div>
+          <div class="source-note"><span class="note-icon" aria-hidden="true">ⓘ</span><div><strong>How to choose a good institution</strong>These links help you find current directory listings; they are not a government ranking of the “best” schools. Compare the board, classes and stream offered, fees, scholarships, distance, transport, safety and facilities. Call the institution to confirm details before travelling or paying any fee.</div></div>
+          <div class="team-strip">
+            <div><h3>Would you like our team to help you choose?</h3><p>Send your selected class, stream and district to our support team. The team can follow up using the contact details you submitted.</p><div class="status" id="helpStatus" role="status" aria-live="polite"></div></div>
+            <button class="btn" id="requestHelpButton" type="button">Ask my team for help <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div><strong>Student Pathway · Education support for students</strong><p>Helping students explore their next educational step.</p><p style="margin-top:7px">Founder: <strong>Abdul Manaan</strong></p></div>
+        <div class="footer-links"><a href="https://kys.udiseplus.gov.in/" target="_blank" rel="noopener">UDISE+ directory</a><a href="https://saras.cbse.gov.in/SARAS/AffiliatedList/ListOfSchdirReport" target="_blank" rel="noopener">CBSE schools</a><a href="https://locate.cisce.org/" target="_blank" rel="noopener">CISCE schools</a><a href="https://dashboard.aishe.gov.in/" target="_blank" rel="noopener">AISHE colleges</a></div>
+      </footer>
+    </section>
+  </main>
+
+<script>
+  const INDIA_STATES = [
+    'Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal',
+    'Andaman and Nicobar Islands','Chandigarh','Dadra and Nagar Haveli and Daman and Diu','Delhi','Jammu and Kashmir','Ladakh','Lakshadweep','Puducherry'
+  ];
+  const byId = id => document.getElementById(id);
+  const form = byId('registrationForm');
+  const submitButton = byId('submitButton');
+  const statusBox = byId('registrationStatus');
+  const finderClass = byId('finderClass');
+  const streamField = byId('streamField');
+  const streamSelect = byId('stream');
+  const stateSelect = byId('state');
+  let student = null;
+  let isDemo = false;
+
+  INDIA_STATES.forEach(name => { const option = document.createElement('option'); option.value = name; option.textContent = name; stateSelect.appendChild(option); });
+
+  function setStatus(node, message, type) {
+    node.textContent = message || '';
+    node.className = 'status' + (type ? ' ' + type : '');
+  }
+  function isAppsScript() { return typeof google !== 'undefined' && google.script && google.script.run; }
+  function validIndianOrInternationalPhone(value) {
+    const compact = String(value || '').replace(/[\s()-]/g, '');
+    return /^\+?[0-9]{10,15}$/.test(compact);
+  }
+  function setSessionNotice(message, kind) {
+    const notice = byId('sessionNotice');
+    notice.textContent = message || '';
+    notice.className = 'session-notice visible ' + (kind || 'good');
+  }
+  function showDashboard() {
+    byId('signInPanel').classList.add('hidden');
+    byId('dashboard').classList.add('visible');
+    byId('welcomeTitle').textContent = student ? 'Welcome, ' + student.name.split(/\s+/)[0] + '.' : 'Let’s find your options.';
+    byId('studentBadge').textContent = student ? student.studentClass + ' · support session' : 'Preview session';
+    finderClass.value = student ? student.studentClass : 'Class 11';
+    updateStreamVisibility();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function afterRegistration(result) {
+    if (!result || !result.ok) {
+      setStatus(statusBox, result && result.message ? result.message : 'We could not save your details. Please try again.', 'bad');
+      submitButton.disabled = false; submitButton.innerHTML = 'Continue to school finder <span aria-hidden="true">→</span>';
+      return;
+    }
+    setSessionNotice(result.message || 'Your support request was saved.', 'good');
+    showDashboard();
+    // The backend message distinguishes a saved request from a configured/sent WhatsApp alert.
+  }
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const name = byId('studentName').value.trim();
+    const mobile = byId('studentMobile').value.trim();
+    const studentClass = byId('studentClass').value;
+    if (name.length < 2) { setStatus(statusBox, 'Please enter your full name.', 'bad'); return; }
+    if (!validIndianOrInternationalPhone(mobile)) { setStatus(statusBox, 'Enter a valid phone number with 10–15 digits.', 'bad'); return; }
+    if (!byId('contactConsent').checked) { setStatus(statusBox, 'Please confirm that the team may contact you.', 'bad'); return; }
+    student = {name, mobile: mobile.replace(/[\s()-]/g,''), studentClass};
+    submitButton.disabled = true; submitButton.textContent = 'Saving details…';
+    setStatus(statusBox, 'Saving your support request…');
+    if (isAppsScript()) {
+      google.script.run.withSuccessHandler(result => {
+        submitButton.disabled = false; submitButton.innerHTML = 'Continue to school finder <span aria-hidden="true">→</span>';
+        afterRegistration(result);
+      }).withFailureHandler(error => {
+        submitButton.disabled = false; submitButton.innerHTML = 'Continue to school finder <span aria-hidden="true">→</span>';
+        setStatus(statusBox, error && error.message ? error.message : 'Could not save your details. Please try again.', 'bad');
+      }).submitRegistration({name, mobile: student.mobile, studentClass, consent: true, website: byId('website').value});
+    } else {
+      isDemo = true;
+      submitButton.disabled = false; submitButton.innerHTML = 'Continue to school finder <span aria-hidden="true">→</span>';
+      setStatus(statusBox, 'Preview mode: details have not been sent or stored. Publish this project with Google Apps Script to enable real submissions.', 'bad');
+      setSessionNotice('Preview mode only: your details have not been sent or stored. Deploy this project through Google Apps Script before accepting real student requests.', 'warn');
+      showDashboard();
+    }
+  });
+
+  function updateStreamVisibility() {
+    const relevant = finderClass.value === 'Class 11' || finderClass.value === 'Class 12';
+    streamField.classList.toggle('hide', !relevant);
+    streamSelect.required = relevant;
+    if (!relevant) streamSelect.value = '';
+  }
+  finderClass.addEventListener('change', updateStreamVisibility);
+
+  function makeCard(icon, tone, title, description, url, linkText) {
+    const card = document.createElement('article'); card.className = 'directory-card';
+    const iconEl = document.createElement('div'); iconEl.className = 'source-icon' + (tone ? ' ' + tone : ''); iconEl.textContent = icon; iconEl.setAttribute('aria-hidden','true');
+    const h4 = document.createElement('h4'); h4.textContent = title;
+    const p = document.createElement('p'); p.textContent = description;
+    const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = linkText + ' ↗';
+    card.append(iconEl,h4,p,a); return card;
+  }
+  function searchLinks() {
+    const state = stateSelect.value.trim();
+    const district = byId('district').value.trim();
+    const type = byId('institutionType').value;
+    const key = byId('schoolQuery').value.trim();
+    const level = type === 'college' ? 'colleges universities' : type === 'both' ? 'schools colleges universities' : 'schools senior secondary schools';
+    const classPart = ['Class 11','Class 12'].includes(finderClass.value) ? finderClass.value : '';
+    const streamPart = streamSelect.value && !streamField.classList.contains('hide') ? streamSelect.value : '';
+    const query = [level, classPart, streamPart, key, district, state, 'India'].filter(Boolean).join(' ');
+    const enc = encodeURIComponent(query);
+    const maps = 'https://www.google.com/maps/search/?api=1&query=' + enc;
+    const web = 'https://www.google.com/search?q=' + enc + '+contact+phone+official+website';
+    const udise = 'https://kys.udiseplus.gov.in/';
+    const cbse = 'https://saras.cbse.gov.in/SARAS/AffiliatedList/ListOfSchdirReport';
+    const cisce = 'https://locate.cisce.org/';
+    const aishe = 'https://dashboard.aishe.gov.in/';
+    const cards = [];
+    cards.push(makeCard('⌖','', 'Nearby ' + (type === 'college' ? 'colleges' : type === 'both' ? 'schools & colleges' : 'schools'), 'Open a live map search for ' + district + ', ' + state + '. Listings may include phone numbers, websites, directions and hours.', maps, 'View local listings'));
+    cards.push(makeCard('U','blue','UDISE+ — Government school directory','The Ministry of Education’s national “Know Your School” portal. Search school records and verify official school information.', udise, 'Open UDISE+'));
+    if (type !== 'college') {
+      cards.push(makeCard('CB','gold','CBSE affiliated-school directory','Search the CBSE SARAS directory by state, district, school name or affiliation number. Check active affiliation status.', cbse, 'Search CBSE schools'));
+      cards.push(makeCard('IC','', 'CISCE affiliated-school locator','Search schools affiliated with ICSE / ISC and review available location and website details.', cisce, 'Locate CISCE schools'));
+    }
+    if (type !== 'school') {
+      cards.push(makeCard('HE','blue','AISHE — higher-education institutions','Government of India’s Higher Education Institution directory for universities, colleges and other higher-education institutions.', aishe, 'Explore colleges'));
+    }
+    cards.push(makeCard('⌕','', 'Search official websites & contact details','Search the web for institutions matching your class, stream and location. Prefer school/college websites and verify details by calling.', web, 'Search web results'));
+    return {cards, state, district, query};
+  }
+
+  byId('schoolFinderForm').addEventListener('submit', event => {
+    event.preventDefault();
+    if (!byId('schoolFinderForm').reportValidity()) return;
+    if (['Class 11','Class 12'].includes(finderClass.value) && !streamSelect.value) { setStatus(byId('finderStatus'),'Please choose a stream, or select “Not sure yet”.','bad'); return; }
+    const result = searchLinks();
+    byId('directoryGrid').replaceChildren(...result.cards);
+    byId('resultsTitle').textContent = 'Explore ' + result.district + ', ' + result.state;
+    byId('resultsSubtitle').textContent = 'Search matches for ' + result.query + '. Open a source to view live listings and available contact details.';
+    byId('resultsArea').classList.remove('hidden');
+    setStatus(byId('finderStatus'),'Search links are ready below. These sources open in a new tab.','good');
+    setStatus(byId('helpStatus'),'');
+    byId('requestHelpButton').disabled = false; byId('requestHelpButton').innerHTML = 'Ask my team for help <span aria-hidden="true">→</span>';
+    byId('resultsArea').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+
+  byId('resetFinder').addEventListener('click', () => {
+    finderClass.value = student ? student.studentClass : 'Class 11';
+    byId('institutionType').value = 'school'; stateSelect.value = ''; byId('district').value = ''; byId('schoolQuery').value = ''; streamSelect.value = '';
+    updateStreamVisibility(); byId('resultsArea').classList.add('hidden'); setStatus(byId('finderStatus'),'');
+  });
+
+  byId('requestHelpButton').addEventListener('click', () => {
+    const button = byId('requestHelpButton');
+    if (!student) { setStatus(byId('helpStatus'),'Please submit your contact details first so the team knows how to reach you.','bad'); return; }
+    const state = stateSelect.value.trim(), district = byId('district').value.trim();
+    if (!state || !district) { setStatus(byId('helpStatus'),'Choose a state and district, then search before requesting support.','bad'); return; }
+    const preferences = {name:student.name, mobile:student.mobile, studentClass:finderClass.value, state, district, stream:streamSelect.value, institutionType:byId('institutionType').value, keyword:byId('schoolQuery').value.trim(), consent:true};
+    button.disabled = true; button.textContent = 'Sending request…'; setStatus(byId('helpStatus'),'Sending your guidance request…');
+    if (isAppsScript()) {
+      google.script.run.withSuccessHandler(result => {
+        button.disabled = false; button.innerHTML = 'Ask my team for help <span aria-hidden="true">→</span>';
+        setStatus(byId('helpStatus'), result && result.message ? result.message : 'Your request was submitted.', result && result.ok ? 'good' : 'bad');
+      }).withFailureHandler(error => {
+        button.disabled = false; button.innerHTML = 'Ask my team for help <span aria-hidden="true">→</span>';
+        setStatus(byId('helpStatus'), error && error.message ? error.message : 'The request could not be sent. Please try again.', 'bad');
+      }).submitSchoolHelp(preferences);
+    } else {
+      button.disabled = false; button.innerHTML = 'Ask my team for help <span aria-hidden="true">→</span>';
+      setStatus(byId('helpStatus'),'Preview mode: this request has not been sent. Publish through Google Apps Script to enable team notifications.','bad');
+    }
+  });
+</script>
+</body>
+</html>
